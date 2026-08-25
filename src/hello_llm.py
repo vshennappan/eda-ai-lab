@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import sys
 
 from dotenv import load_dotenv
@@ -7,7 +8,11 @@ from openai import OpenAI
 
 load_dotenv()
 
-client = OpenAI()
+#client = OpenAI()
+client = OpenAI(
+    api_key=os.getenv("GROQ_API_KEY"),
+    base_url="https://api.groq.com/openai/v1",
+)
 
 question = " ".join(sys.argv[1:]).strip()
 
@@ -17,8 +22,12 @@ if not question:
 if not question:
     raise SystemExit("Please enter a question.")
 
+#response = client.responses.create(
+#    model="gpt-5.6",
+#    input=question,
+#)
 response = client.responses.create(
-    model="gpt-5.6",
+    model="openai/gpt-oss-20b",
     input=question,
 )
 
